@@ -1,4 +1,8 @@
 const Ship = (N, name) => {
+    if(!Number.isInteger(N))
+        throw new Error("Non integer input N")
+    if(N < 1 || N > 10)
+        throw new Error ("N must be between 1 and 10")
     name = name
     if(!Number.isInteger(N)){
         throw new Error("N must be an integer")
@@ -7,7 +11,6 @@ const Ship = (N, name) => {
         throw new Error("Integer must be 0 or above");
     }
     let timesHit = 0;
-
     const hit = () => {
         if(isSunk())
             throw new Error("Already sunk");
@@ -15,8 +18,9 @@ const Ship = (N, name) => {
     }
 
     const isSunk = () => N <= timesHit;
+    const getLength = () => N;
     return{
-        isSunk, hit
+        isSunk, hit, getLength
     }
 }
 
