@@ -20,12 +20,10 @@ const Ship = (N, name) => {
     const isSunk = () => N <= timesHit;
     const getLength = () => N;
     return{
-        isSunk, hit, getLength
+        isSunk, hit, getLength,name
     }
 }
 
-let ship = Ship(1)
-ship.hit()
 
 
 module.exports = Ship;

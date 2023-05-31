@@ -16,13 +16,14 @@ const Board = () => {
         if(mode != 'h' && mode != 'v')
             throw new Error ("Incorrect mode parameter");
         let shipLength = ship.getLength();
+        let toCheck = []
         if(mode == 'v'){
             if(row + shipLength - 1 > 9)
                 return{
                     status : "fail",
                     msg : "Out of Bounds"
                 }
-            for(let i = row; i < 10; i++){
+            for(let i = row; i < row + shipLength; i++){
                 if(fields[i][column].containsShip()){
                     return{
                         status: "fail",
@@ -30,7 +31,8 @@ const Board = () => {
                     }
                 }
             }
-            for(let i = row; i < 10; i++){
+            
+            for(let i = row; i < row + shipLength; i++){
                 fields[i][column].makeFilled(ship);
             }
             return{
@@ -43,7 +45,7 @@ const Board = () => {
                     status : "fail",
                     msg : "Out of Bounds"
                 }
-            for(let i = column; i < 10; i++){
+            for(let i = column; i < column + shipLength; i++){
                 if(fields[row][i].containsShip()){
                     return{
                         status: "fail",
@@ -51,7 +53,7 @@ const Board = () => {
                     }
                 }
             }
-            for(let i = column; i < 10; i++){
+            for(let i = column; i < column + shipLength; i++){
                 fields[row][i].makeFilled(ship);
             }
             return{
@@ -59,9 +61,16 @@ const Board = () => {
             }
         }
     }
-    return {addShip}
+    const hit = (i,j) => {
+        if(!Number.isInteger(i) || !Number.isInteger(j)){
+            throw new Error ("Non integer Input");
+        }
+        if(i < 0 || i > 9 || j < 0 || j > 9){
+            throw new Error("Values out of bound (0 to 9)")
+        }
+        return fields[i][j].hitField();
+    }
+    return {addShip, hit, fields}
 }
-
-
 
 module.exports = Board;

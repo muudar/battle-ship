@@ -8,7 +8,22 @@ const Field = (row, column) => {
     let hit = false;
     let ship = null; 
 
-    const hitField = () => hit = true;
+    const hitField = () => {
+        if(isHit()){
+            return {
+                status : "fail",
+                msg : "Already hit this field before"
+            };
+        }
+        hit = true;
+        if(containsShip()){
+            ship.hit();
+        }
+        return {
+            status: "success",
+            ship: ship
+        }
+    }
 
     const isHit = () => hit;
 
