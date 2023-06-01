@@ -31,7 +31,6 @@ const Board = () => {
                     }
                 }
             }
-            
             for(let i = row; i < row + shipLength; i++){
                 fields[i][column].makeFilled(ship);
             }

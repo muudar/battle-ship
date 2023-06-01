@@ -26,6 +26,9 @@ const Field = (row, column) => {
 
     const isHit = () => hit;
 
+    const getShip = () =>{
+        return ship;
+    }
     const containsShip = () => {
         if(ship)
             return true;
@@ -33,13 +36,11 @@ const Field = (row, column) => {
     }
 
     const makeFilled = (s) => {
-        if(containsShip()) 
-            throw new Error ("Ship already here!")
         ship = s;
     };
 
     return {
-        hitField, isHit, containsShip, makeFilled,
+        hitField, isHit, containsShip, makeFilled, getShip
     }
 }
 

@@ -1,4 +1,7 @@
-const board = require("./board");
+const Board = require("./board");
+const Field = require("./field");
+const Ship = require("./ship")
+
 
 function loadGrids(b){
     let fields = b.fields;
@@ -17,11 +20,17 @@ function loadGrids(b){
     }
 }
 
-function colorizeShipGrid(){
-  let shipGrid = document.querySelector(".ship-grid");
-  let children = shipGrid.children;
-  for(let child of children){
-    child.style['background-color'] = "rgb(157, 156, 156)";
+function colorizeShipGrid(board){
+  let fields = board.fields;
+  for(let i = 0; i < 10; i++){
+    for(let j = 0; j < 10; j++){
+       if(fields[i][j].getShip()){
+         fields[i][j].element.style['background-color'] = fields[i][j].getShip().color;
+       }
+       else{
+        fields[i][j].element.style['background-color'] = "rgb(157, 156, 156)";
+       }
+    }
   }
 }
 function showModule(messageText) { 
@@ -44,7 +53,8 @@ function showModule(messageText) {
     document.body.appendChild(moduleOverlay);
   }
 
-  function makePlacements(board,ship, mode){
+  function makePlacements(curr, board,ship, mode){
+    colorizeShipGrid(board);
     let N = ship.getLength();
     let shipGrid = document.querySelector(".ship-grid");
     let rotateBtn = document.querySelector(".rotate");
@@ -53,11 +63,11 @@ function showModule(messageText) {
         mode = 'h'
       else
         mode = 'v'
-      makePlacements(board,ship,mode);
+      makePlacements(curr, board,ship,mode);
     }
     for(let i = 0; i < shipGrid.children.length; i++){
       shipGrid.children[i].onmouseleave = (event)=>{
-        colorizeShipGrid();
+        colorizeShipGrid(board);
       }
       if(mode == "v"){
         shipGrid.children[i].onmouseover = (event) =>{
@@ -79,10 +89,32 @@ function showModule(messageText) {
           }
         }
       }
+      shipGrid.children[i].onclick = (event) =>{
+        let row = parseInt(event.target.dataset.row);
+        let column = parseInt(event.target.dataset.column);
+        let r = board.addShip(row, column, mode, ship);
+        if(r.status == 'fail'){
+          showModule(`Error placing ${ship.name} here!\nReason is: ${r.msg}`);
+        }
+        else{
+          promptShip(board, curr+1, mode);
+        }
+      }
     }
   }
-  function promptShip(board,ship, mode){
+  function promptShip(board, curr = 0, mode){
+    let carrier = Ship(5,"Carrier", "green");
+    let battleship = Ship(4, "Battleship" , "blue");
+    let cruiser = Ship(3, "Cruiser", "yellow");
+    let submarine = Ship(3, "Submarine", "pink");
+    let destroyer = Ship(2, "destoryer", "brown");
+    let ships = [carrier,battleship,cruiser,submarine,destroyer];
+    if(curr >= ships.length){
+      return;
+    }
+    let ship = ships[curr];
     showModule(`Place your ${ship.name}! Length: ${ship.getLength()}`);
-    makePlacements(board,ship, mode);
+    makePlacements(curr,board,ship, mode);
+    
   }
 export {loadGrids, showModule, promptShip};
