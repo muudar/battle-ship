@@ -1,5 +1,4 @@
-const Board = require("./board");
-const Field = require("./field");
+
 const Ship = require("./ship")
 
 
@@ -102,6 +101,19 @@ function showModule(messageText) {
       }
     }
   }
+
+  function clearFunctionalities(){
+    let shipGrid = document.querySelector(".ship-grid");
+    for(let i = 0; i < shipGrid.children.length; i++){
+      shipGrid.children[i].onclick = (event) =>{
+
+      }
+      shipGrid.children[i].onmouseover = (event) => {
+
+      }
+      shipGrid.children[i].style.cursor = 'default';
+    }
+  }
   function promptShip(board, curr = 0, mode){
     let carrier = Ship(5,"Carrier", "green");
     let battleship = Ship(4, "Battleship" , "blue");
@@ -110,6 +122,7 @@ function showModule(messageText) {
     let destroyer = Ship(2, "destoryer", "brown");
     let ships = [carrier,battleship,cruiser,submarine,destroyer];
     if(curr >= ships.length){
+      clearFunctionalities();
       return;
     }
     let ship = ships[curr];
