@@ -1,13 +1,28 @@
-const loadGrids = () => {
+const board = require("./board");
+
+function loadGrids(b){
+    let fields = b.fields;
     const grids = document.querySelectorAll(".grid");
     for(let grid of grids){
-        for(let i = 0; i < 100; i++){
-            let div = document.createElement("div");
-            div.dataset.row = i;
-            div.dataset.column = j;
-            grid.appendChild(div);
+        for(let i = 0; i < 10; i++){
+            for(let j = 0; j < 10; j++){
+              let div = document.createElement("div");
+              div.dataset.row = i;
+              div.dataset.column = j;
+              if(grid.classList.contains('ship-grid'))
+                fields[i][j].element = div;
+              grid.appendChild(div);
+            }
         }
     }
+}
+
+function colorizeShipGrid(){
+  let shipGrid = document.querySelector(".ship-grid");
+  let children = shipGrid.children;
+  for(let child of children){
+    child.style['background-color'] = "rgb(157, 156, 156)";
+  }
 }
 function showModule(messageText) { 
     var moduleOverlay = document.createElement("div");
@@ -28,4 +43,46 @@ function showModule(messageText) {
     moduleOverlay.appendChild(moduleContent);
     document.body.appendChild(moduleOverlay);
   }
-export {loadGrids, showModule};
+
+  function makePlacements(board,ship, mode){
+    let N = ship.getLength();
+    let shipGrid = document.querySelector(".ship-grid");
+    let rotateBtn = document.querySelector(".rotate");
+    rotateBtn.onclick = (event) => {
+      if(mode == 'v')
+        mode = 'h'
+      else
+        mode = 'v'
+      makePlacements(board,ship,mode);
+    }
+    for(let i = 0; i < shipGrid.children.length; i++){
+      shipGrid.children[i].onmouseleave = (event)=>{
+        colorizeShipGrid();
+      }
+      if(mode == "v"){
+        shipGrid.children[i].onmouseover = (event) =>{
+          let row = parseInt(event.target.dataset.row);
+          let column = parseInt(event.target.dataset.column);
+          for(let i = row; i < Math.min(row + N, 10); i++){
+            let e = board.fields[i][column].element;
+            e.style['background-color'] = ship.color;
+          }
+        }
+      }
+      if(mode == "h"){
+        shipGrid.children[i].onmouseover = (event) =>{
+          let row = parseInt(event.target.dataset.row);
+          let column = parseInt(event.target.dataset.column);
+          for(let i = column; i < Math.min(column + N, 10); i++){
+            let e = board.fields[row][i].element;
+            e.style['background-color'] = ship.color;
+          }
+        }
+      }
+    }
+  }
+  function promptShip(board,ship, mode){
+    showModule(`Place your ${ship.name}! Length: ${ship.getLength()}`);
+    makePlacements(board,ship, mode);
+  }
+export {loadGrids, showModule, promptShip};

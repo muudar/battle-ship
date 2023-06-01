@@ -7,7 +7,6 @@ const Field = (row, column) => {
         throw new Error("Non Intger Input");
     let hit = false;
     let ship = null; 
-
     const hitField = () => {
         if(isHit()){
             return {

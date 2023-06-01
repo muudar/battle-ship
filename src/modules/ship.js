@@ -1,4 +1,4 @@
-const Ship = (N, name) => {
+const Ship = (N, name, color = "green") => {
     if(!Number.isInteger(N))
         throw new Error("Non integer input N")
     if(N < 1 || N > 10)
@@ -20,7 +20,7 @@ const Ship = (N, name) => {
     const isSunk = () => N <= timesHit;
     const getLength = () => N;
     return{
-        isSunk, hit, getLength,name
+        isSunk, hit, getLength,name,color
     }
 }
 
