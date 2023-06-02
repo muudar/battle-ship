@@ -137,3 +137,11 @@ table {
     font-size: 30px;
     font-weight:bold;
   }
+
+  .ship-grid > div{
+    display:flex;
+    font-size: 26px;
+    justify-content:center;
+    align-items: center;
+    color:red
+  }

@@ -17,10 +17,14 @@ const Field = (row, column) => {
         hit = true;
         if(containsShip()){
             ship.hit();
+            return {
+                status: "success",
+                ship: ship
+            }
         }
-        return {
+        return{
             status: "success",
-            ship: ship
+            ship: null
         }
     }
 

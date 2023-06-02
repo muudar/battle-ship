@@ -7,6 +7,13 @@ const ComputerPlayer = () =>{
     let submarine = Ship(3, "Submarine", "pink");
     let destroyer = Ship(2, "destoryer", "brown");
     let ships = [carrier,battleship,cruiser,submarine,destroyer];
+    let indices = [];
+    for(let i =0; i < 10; i++){
+        for(let j = 0; j < 10; j++){
+            indices.push([i,j]);
+        }
+    }
+    console.log(indices);
     const placeShipsRandomly = (board) => {
         let modes = ['v', 'h'];
         for(let i = 0; i < ships.length; i++){
@@ -17,8 +24,14 @@ const ComputerPlayer = () =>{
             }
         }
     }
+    const generateRandomAttack = ()=>{
+        let randomIndex = getRandomInt(indices.length);
+        let attack = indices[randomIndex];
+        indices.splice(randomIndex,1);
+        return attack;
+    }
     return {
-        placeShipsRandomly
+        placeShipsRandomly, generateRandomAttack
     }
 }
 
