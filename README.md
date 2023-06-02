@@ -6,6 +6,7 @@ Battleship game against a computer.
 ## Demo 
 
 You can run the project [here]
+
 This site was built using [GitHub Pages](https://pages.github.com/). 
 
 ## Goal
